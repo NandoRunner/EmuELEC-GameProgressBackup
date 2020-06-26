@@ -35,11 +35,12 @@
             this.txtInput = new System.Windows.Forms.TextBox();
             this.txtOutput = new System.Windows.Forms.TextBox();
             this.btnBackup = new System.Windows.Forms.Button();
+            this.imageList2 = new System.Windows.Forms.ImageList(this.components);
             this.tvwInput = new System.Windows.Forms.TreeView();
-            this.btnRead = new System.Windows.Forms.Button();
+            this.btnList = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tsProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.tsInfo = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnGetInputFolder = new System.Windows.Forms.Button();
             this.grpExtensions = new System.Windows.Forms.GroupBox();
             this.rdoAll = new System.Windows.Forms.RadioButton();
@@ -50,7 +51,6 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.btnOpenOutputFolder = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
-            this.imageList2 = new System.Windows.Forms.ImageList(this.components);
             this.statusStrip1.SuspendLayout();
             this.grpExtensions.SuspendLayout();
             this.SuspendLayout();
@@ -96,12 +96,24 @@
             // btnBackup
             // 
             this.btnBackup.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnBackup.ImageIndex = 1;
+            this.btnBackup.ImageList = this.imageList2;
             this.btnBackup.Location = new System.Drawing.Point(404, 99);
             this.btnBackup.Name = "btnBackup";
             this.btnBackup.Size = new System.Drawing.Size(112, 48);
             this.btnBackup.TabIndex = 4;
-            this.btnBackup.Text = "&Backup to Output";
+            this.btnBackup.Text = "&Backup";
+            this.btnBackup.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnBackup.UseVisualStyleBackColor = true;
+            // 
+            // imageList2
+            // 
+            this.imageList2.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList2.ImageStream")));
+            this.imageList2.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList2.Images.SetKeyName(0, "exit.png");
+            this.imageList2.Images.SetKeyName(1, "backup.png");
+            this.imageList2.Images.SetKeyName(2, "log.png");
             // 
             // tvwInput
             // 
@@ -111,37 +123,40 @@
             this.tvwInput.Size = new System.Drawing.Size(712, 359);
             this.tvwInput.TabIndex = 5;
             // 
-            // btnRead
+            // btnList
             // 
-            this.btnRead.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRead.Location = new System.Drawing.Point(277, 99);
-            this.btnRead.Name = "btnRead";
-            this.btnRead.Size = new System.Drawing.Size(112, 48);
-            this.btnRead.TabIndex = 6;
-            this.btnRead.Text = "&Read from Input";
-            this.btnRead.UseVisualStyleBackColor = true;
+            this.btnList.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnList.ImageIndex = 2;
+            this.btnList.ImageList = this.imageList2;
+            this.btnList.Location = new System.Drawing.Point(277, 99);
+            this.btnList.Name = "btnList";
+            this.btnList.Size = new System.Drawing.Size(112, 48);
+            this.btnList.TabIndex = 6;
+            this.btnList.Text = "&List";
+            this.btnList.UseVisualStyleBackColor = true;
             // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsInfo,
-            this.toolStripStatusLabel1});
+            this.tsProgressBar,
+            this.tsInfo});
             this.statusStrip1.Location = new System.Drawing.Point(0, 539);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(784, 22);
             this.statusStrip1.TabIndex = 7;
             this.statusStrip1.Text = "statusStrip1";
             // 
+            // tsProgressBar
+            // 
+            this.tsProgressBar.Name = "tsProgressBar";
+            this.tsProgressBar.Size = new System.Drawing.Size(100, 16);
+            // 
             // tsInfo
             // 
             this.tsInfo.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsInfo.Name = "tsInfo";
             this.tsInfo.Size = new System.Drawing.Size(0, 17);
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
             // 
             // btnGetInputFolder
             // 
@@ -176,6 +191,7 @@
             this.rdoAll.Tag = "2";
             this.rdoAll.Text = "All";
             this.rdoAll.UseVisualStyleBackColor = true;
+            this.rdoAll.Visible = false;
             // 
             // rdoSrm
             // 
@@ -251,15 +267,9 @@
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // imageList2
-            // 
-            this.imageList2.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList2.ImageStream")));
-            this.imageList2.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList2.Images.SetKeyName(0, "exit.png");
-            // 
             // FrmMain
             // 
-            this.AcceptButton = this.btnRead;
+            this.AcceptButton = this.btnList;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnExit;
@@ -271,7 +281,7 @@
             this.Controls.Add(this.grpExtensions);
             this.Controls.Add(this.btnGetInputFolder);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.btnRead);
+            this.Controls.Add(this.btnList);
             this.Controls.Add(this.tvwInput);
             this.Controls.Add(this.btnBackup);
             this.Controls.Add(this.txtOutput);
@@ -302,7 +312,7 @@
         private System.Windows.Forms.TextBox txtOutput;
         private System.Windows.Forms.Button btnBackup;
         private System.Windows.Forms.TreeView tvwInput;
-        private System.Windows.Forms.Button btnRead;
+        private System.Windows.Forms.Button btnList;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel tsInfo;
         internal System.Windows.Forms.Button btnGetInputFolder;
@@ -315,8 +325,8 @@
         internal System.Windows.Forms.Button btnOpenOutputFolder;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ImageList imageList2;
+        private System.Windows.Forms.ToolStripProgressBar tsProgressBar;
     }
 }
 

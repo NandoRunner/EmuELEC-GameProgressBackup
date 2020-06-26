@@ -3,10 +3,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
 using System.Diagnostics;
-using System.Net.Configuration;
-using System.Net.NetworkInformation;
+using EmuELEC_GameProgressBackup.Model;
 
 namespace EmuELEC_GameProgressBackup
 {
@@ -36,8 +34,8 @@ namespace EmuELEC_GameProgressBackup
             btnGetOutputFolder.Click += EventGetFolder;
             btnGetOutputFolder.Click += EventEnableFields;
 
-            btnRead.Click += EventDisableFields;
-            btnRead.Click += EventReadFromInput;
+            btnList.Click += EventDisableFields;
+            btnList.Click += EventReadFromInput;
 
             btnOpenInputFolder.Tag = "Input";
             btnOpenInputFolder.Click += EventRunExplorer;
@@ -74,15 +72,16 @@ namespace EmuELEC_GameProgressBackup
         {
             this.Cursor = Cursors.WaitCursor;
             isProcessing = true;
+            tsProgressBar.Value = 0;
+            tsProgressBar.Maximum = 0;
 
             tvwInput.Nodes.Clear();
 
             string[] listPath = { txtInput.Text };
 
+            UI.selectedExtension = rdoAll.Checked ? FileExtensions.All : (rdoSrm.Checked ? FileExtensions.Srm : FileExtensions.State);
 
-            ReadInput.ext = rdoAll.Checked ? myExtensions.all : (rdoSrm.Checked ? myExtensions.srm : myExtensions.state);
-
-            var myTasks = (from path in listPath select (Task.Run(() => ReadInput.ListDirectory(tvwInput, path)))).ToArray();
+            var myTasks = (from path in listPath select (Task.Run(() => Business.ListDirectory(tvwInput, path)))).ToArray();
 
             var t = Task.WhenAll(myTasks);
             await t.ContinueWith(x => EndTask());
@@ -108,7 +107,7 @@ namespace EmuELEC_GameProgressBackup
 
         private void EnableFields(bool allow)
         {
-            btnRead.SafeInvoke(c => c.Enabled = allow);
+            btnList.SafeInvoke(c => c.Enabled = allow);
             btnBackup.SafeInvoke(c => c.Enabled = allow);
             btnGetInputFolder.SafeInvoke(c => c.Enabled = allow);
             btnGetOutputFolder.SafeInvoke(c => c.Enabled = allow);
@@ -187,5 +186,7 @@ namespace EmuELEC_GameProgressBackup
                 }
             }
         }
+
+
     }
 }
