@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FAndradeTecInfo.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,19 +7,42 @@ using System.Windows.Forms;
 
 namespace EmuELEC_GameProgressBackup
 {
-
-
     public static class Business
     {
         public static int found;
         public readonly static string[] ignoreFolderList = { "downloaded_images", "logos", "images", "image", "downloaded_videos", "videos", "video" };
+
+        public static List<string> fileList = new List<string>();
+
+        public static void BackupFiles(TreeView treeView, string path)
+        {
+            DateTime dt = DateTime.Now;
+
+            //todo: criar destino se não existir?
+            //todo: verificar se destino é local?
+            //todo: criar caminhos relativos?
+            var i = 1;
+
+            fileList.Sort();
+
+            foreach (var file in fileList)
+            {
+                UI.Showinfo($"{i++}/{found} - {file}");
+                MyFS.CopyFile(file, path);
+            }
+
+            UI.Showinfo($"{found} {UI.GetExtensionName()} files Backup completed in {DateTime.Now.Subtract(dt).TotalSeconds.ToString("###.#")} seconds");
+
+            found = 0;
+            fileList.Clear();
+        }
 
         #region Non-recursive approach
         public static void ListDirectory(TreeView treeView, string path)
         {
             DateTime dt = DateTime.Now;
             found = 0;
-            treeView.Nodes.Clear();
+            fileList.Clear();
 
             var stack = new Stack<TreeNode>();
             var rootDirectory = new DirectoryInfo(path);
@@ -54,6 +78,7 @@ namespace EmuELEC_GameProgressBackup
                 foreach (var file in directoryInfo.GetFiles(UI.GetSearchPattern()))
                 {
                     currentNode.Nodes.Add(new TreeNode(file.Name));
+                    fileList.Add(file.FullName);
                 }
             }
 

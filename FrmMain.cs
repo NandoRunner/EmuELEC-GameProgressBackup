@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using EmuELEC_GameProgressBackup.Model;
+using FAndradeTI.Util.Network;
 
 namespace EmuELEC_GameProgressBackup
 {
@@ -14,7 +15,7 @@ namespace EmuELEC_GameProgressBackup
 
         private bool isProcessing;
         private bool isLoaded;
-        
+
         public FrmMain()
         {
             InitializeComponent();
@@ -35,7 +36,10 @@ namespace EmuELEC_GameProgressBackup
             btnGetOutputFolder.Click += EventEnableFields;
 
             btnList.Click += EventDisableFields;
-            btnList.Click += EventReadFromInput;
+            btnList.Click += EventList;
+
+            btnBackup.Click += EventDisableFields;
+            btnBackup.Click += EventBackup;
 
             btnOpenInputFolder.Tag = "Input";
             btnOpenInputFolder.Click += EventRunExplorer;
@@ -52,13 +56,13 @@ namespace EmuELEC_GameProgressBackup
             rdoStates.Checked = true;
             btnBackup.Enabled = false;
 
-            if (!Network.InternetConnectionExists()) Application.Exit();
-            
+            if (!Internet.ConnectionExists()) Application.Exit();
+
             var ret = DialogResult.Retry;
 
             while (ret == DialogResult.Retry)
             {
-                if (!Network.HostExists(BASE_EMUELEC.Replace("\\", "")))
+                if (!Internet.HostExists(BASE_EMUELEC.Replace("\\", "")))
                 {
                     ret = MessageBox.Show($"{BASE_EMUELEC} is unavailable\r\n\r\nPlease check if EmuELEC is running and its wifi is properly setup", "EmuELEC communication error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
                 }
@@ -68,7 +72,7 @@ namespace EmuELEC_GameProgressBackup
             if (ret == DialogResult.Cancel) Application.Exit();
         }
 
-        private async void EventReadFromInput(object sender, EventArgs e)
+        private async void EventList(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
             isProcessing = true;
@@ -91,13 +95,40 @@ namespace EmuELEC_GameProgressBackup
         {
             tvwInput.SafeInvoke(c => c.ExpandAll());
             EnableFields(true);
+            btnBackup.SafeInvoke(c => c.Enabled = true);
             isProcessing = false;
             isLoaded = true;
             this.Cursor = Cursors.Default;
         }
+
+        public async Task EndTaskBackup()
+        {
+            tvwInput.SafeInvoke(c => c.Nodes.Clear());
+            EnableFields(true);
+            isProcessing = false;
+            isLoaded = false;
+            this.Cursor = Cursors.Default;
+        }
+
         public async Task EndTaskRecursive()
         {
             await EndTask();
+        }
+
+        private async void EventBackup(object sender, EventArgs e)
+        {
+            this.Cursor = Cursors.WaitCursor;
+            isProcessing = true;
+            tsProgressBar.Value = 0;
+            tsProgressBar.Maximum = 0;
+
+            string[] listPath = { txtOutput.Text };
+
+
+            var myTasks = (from path in listPath select (Task.Run(() => Business.BackupFiles(tvwInput, path)))).ToArray();
+
+            var t = Task.WhenAll(myTasks);
+            await t.ContinueWith(x => EndTaskBackup());
         }
 
         private void EventDisableFields(object sender, EventArgs e)
@@ -108,7 +139,7 @@ namespace EmuELEC_GameProgressBackup
         private void EnableFields(bool allow)
         {
             btnList.SafeInvoke(c => c.Enabled = allow);
-            btnBackup.SafeInvoke(c => c.Enabled = allow);
+            btnBackup.SafeInvoke(c => c.Enabled = !allow);
             btnGetInputFolder.SafeInvoke(c => c.Enabled = allow);
             btnGetOutputFolder.SafeInvoke(c => c.Enabled = allow);
             txtOutput.SafeInvoke(c => c.Enabled = allow);

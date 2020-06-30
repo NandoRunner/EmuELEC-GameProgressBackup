@@ -57,7 +57,6 @@
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\FileExtensions.cs" />
-    <Compile Include="Network.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Business.cs" />
@@ -90,6 +89,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Resource\FandradeTecInfoUtils\FAndradeTecInfo.Utils.csproj">
+      <Project>{D27F1821-F7C8-4D31-BE57-8452279F0B4C}</Project>
+      <Name>FAndradeTecInfo.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Resource\FandradeTecInfoUtils\FAndradeTI.Util.Network\FAndradeTI.Util.Network.csproj">
+      <Project>{5B55922F-BF2C-49DB-A2F9-BA91A0218180}</Project>
+      <Name>FAndradeTI.Util.Network</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
