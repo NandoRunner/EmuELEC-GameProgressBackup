@@ -5,10 +5,6 @@ VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmuELEC-GameProgressBackup", "EmuELEC-GameProgressBackup.csproj", "{8944092B-3CB3-40E0-B613-2839B5FD9BAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FAndradeTI.Util.Network", "..\Resource\FandradeTecInfoUtils\FAndradeTI.Util.Network\FAndradeTI.Util.Network.csproj", "{5B55922F-BF2C-49DB-A2F9-BA91A0218180}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FAndradeTecInfo.Utils", "..\Resource\FandradeTecInfoUtils\FAndradeTecInfo.Utils.csproj", "{D27F1821-F7C8-4D31-BE57-8452279F0B4C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,18 +18,6 @@ Global
 		{8944092B-3CB3-40E0-B613-2839B5FD9BAD}.NoOffice-Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8944092B-3CB3-40E0-B613-2839B5FD9BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8944092B-3CB3-40E0-B613-2839B5FD9BAD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5B55922F-BF2C-49DB-A2F9-BA91A0218180}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B55922F-BF2C-49DB-A2F9-BA91A0218180}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B55922F-BF2C-49DB-A2F9-BA91A0218180}.NoOffice-Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B55922F-BF2C-49DB-A2F9-BA91A0218180}.NoOffice-Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B55922F-BF2C-49DB-A2F9-BA91A0218180}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B55922F-BF2C-49DB-A2F9-BA91A0218180}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D27F1821-F7C8-4D31-BE57-8452279F0B4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D27F1821-F7C8-4D31-BE57-8452279F0B4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D27F1821-F7C8-4D31-BE57-8452279F0B4C}.NoOffice-Debug|Any CPU.ActiveCfg = NoOffice-Debug|Any CPU
-		{D27F1821-F7C8-4D31-BE57-8452279F0B4C}.NoOffice-Debug|Any CPU.Build.0 = NoOffice-Debug|Any CPU
-		{D27F1821-F7C8-4D31-BE57-8452279F0B4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D27F1821-F7C8-4D31-BE57-8452279F0B4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

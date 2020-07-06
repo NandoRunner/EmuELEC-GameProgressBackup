@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using EmuELEC_GameProgressBackup.Model;
 using FAndradeTI.Util.Network;
+using FAndradeTI.Util.FileSystem;
 
 namespace EmuELEC_GameProgressBackup
 {
@@ -47,6 +48,10 @@ namespace EmuELEC_GameProgressBackup
             btnOpenOutputFolder.Tag = "Output";
             btnOpenOutputFolder.Click += EventRunExplorer;
 
+            rdoSrm.CheckedChanged += EventChangeExtension;
+            rdoStates.CheckedChanged += EventChangeExtension;
+            rdoAll.CheckedChanged += EventChangeExtension;
+
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -78,8 +83,10 @@ namespace EmuELEC_GameProgressBackup
             isProcessing = true;
             tsProgressBar.Value = 0;
             tsProgressBar.Maximum = 0;
+            btnBackup.Enabled = false;
 
             tvwInput.Nodes.Clear();
+            tvwInput.Enabled = true;
 
             string[] listPath = { txtInput.Text };
 
@@ -115,15 +122,41 @@ namespace EmuELEC_GameProgressBackup
             await EndTask();
         }
 
+        private void EventChangeExtension(object sender, EventArgs e)
+        {
+           
+            var selectedRadio = UI.searchPatternDic.FirstOrDefault(x => x.Value == "*" + ((RadioButton)sender).Text).Key;
+
+            if (selectedRadio == UI.selectedExtension && isLoaded)
+            {
+                btnBackup.Enabled = true;
+                tvwInput.Enabled = true;
+            }
+            else
+            {
+                btnBackup.Enabled = false;
+                tvwInput.Enabled = false;
+            }
+        }
+
         private async void EventBackup(object sender, EventArgs e)
         {
+            var outputFolder = txtOutput.Text;
+
+            if (!FS.FolderExists(outputFolder))
+            {
+                if (MessageBox.Show($"{outputFolder} does not exist\r\n\r\nDo you want to create it?", "EmuELEC Output Folder verification", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    return;
+                else
+                    FS.CreateFolder(outputFolder);
+            }
+
             this.Cursor = Cursors.WaitCursor;
             isProcessing = true;
             tsProgressBar.Value = 0;
             tsProgressBar.Maximum = 0;
 
-            string[] listPath = { txtOutput.Text };
-
+            string[] listPath = { outputFolder };
 
             var myTasks = (from path in listPath select (Task.Run(() => Business.BackupFiles(tvwInput, path)))).ToArray();
 

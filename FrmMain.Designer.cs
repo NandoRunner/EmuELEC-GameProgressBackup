@@ -186,10 +186,10 @@
             this.rdoAll.Enabled = false;
             this.rdoAll.Location = new System.Drawing.Point(159, 23);
             this.rdoAll.Name = "rdoAll";
-            this.rdoAll.Size = new System.Drawing.Size(41, 20);
+            this.rdoAll.Size = new System.Drawing.Size(52, 20);
             this.rdoAll.TabIndex = 2;
             this.rdoAll.Tag = "2";
-            this.rdoAll.Text = "All";
+            this.rdoAll.Text = "[all]";
             this.rdoAll.UseVisualStyleBackColor = true;
             this.rdoAll.Visible = false;
             // 
@@ -210,11 +210,11 @@
             this.rdoStates.Checked = true;
             this.rdoStates.Location = new System.Drawing.Point(17, 23);
             this.rdoStates.Name = "rdoStates";
-            this.rdoStates.Size = new System.Drawing.Size(73, 20);
+            this.rdoStates.Size = new System.Drawing.Size(80, 20);
             this.rdoStates.TabIndex = 0;
             this.rdoStates.TabStop = true;
             this.rdoStates.Tag = "0";
-            this.rdoStates.Text = ".state?";
+            this.rdoStates.Text = ".state??";
             this.rdoStates.UseVisualStyleBackColor = true;
             // 
             // btnGetOutputFolder

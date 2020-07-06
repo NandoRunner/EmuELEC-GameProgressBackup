@@ -1,4 +1,4 @@
-﻿using FAndradeTecInfo.Utils;
+﻿using FAndradeTI.Util.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,7 +19,7 @@ namespace EmuELEC_GameProgressBackup
             DateTime dt = DateTime.Now;
 
             //todo: criar destino se não existir?
-            //todo: verificar se destino é local?
+
             //todo: criar caminhos relativos?
             var i = 1;
 
@@ -28,7 +28,7 @@ namespace EmuELEC_GameProgressBackup
             foreach (var file in fileList)
             {
                 UI.Showinfo($"{i++}/{found} - {file}");
-                MyFS.CopyFile(file, path);
+                FS.CopyFileIfNewer(file, path);
             }
 
             UI.Showinfo($"{found} {UI.GetExtensionName()} files Backup completed in {DateTime.Now.Subtract(dt).TotalSeconds.ToString("###.#")} seconds");
@@ -43,6 +43,9 @@ namespace EmuELEC_GameProgressBackup
             DateTime dt = DateTime.Now;
             found = 0;
             fileList.Clear();
+
+            try
+            { 
 
             var stack = new Stack<TreeNode>();
             var rootDirectory = new DirectoryInfo(path);
@@ -85,6 +88,11 @@ namespace EmuELEC_GameProgressBackup
             treeView.SafeInvoke(c => c.Nodes.Add(node));
             
             UI.Showinfo($"{found} {UI.GetExtensionName()} files found - Reading input completed in {DateTime.Now.Subtract(dt).TotalSeconds.ToString("###.#")} seconds");
+            }
+            catch (Exception ex)
+            {
+                UI.Showinfo($"Error: {ex.Message} - Try again");
+            }
         }
         #endregion
     }

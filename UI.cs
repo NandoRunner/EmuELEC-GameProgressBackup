@@ -9,7 +9,7 @@ namespace EmuELEC_GameProgressBackup
     {
         public static FileExtensions selectedExtension = FileExtensions.State;
 
-        private static readonly Dictionary<FileExtensions, string> searchPatternDic = new Dictionary<FileExtensions, string>() { { FileExtensions.State, "*.state?" },
+        public static readonly Dictionary<FileExtensions, string> searchPatternDic = new Dictionary<FileExtensions, string>() { { FileExtensions.State, "*.state??" },
             { FileExtensions.Srm, "*.srm" },
             { FileExtensions.All, string.Empty }};
 

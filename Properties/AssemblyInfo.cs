@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // conjunto de atributos. Altere estes valores de atributo para modificar as informações
 // associadas a um assembly.
 [assembly: AssemblyTitle("EmuELEC-GameProgressBackup")]
-[assembly: AssemblyDescription("EmuELEC Game Progress Backup")]
+[assembly: AssemblyDescription("Tool for backup all game game progress in you EmuELEC")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("NandoRunner (nando.az@gmail.com)")]
+[assembly: AssemblyCompany("Fernando Andrade (NandoRunner)")]
 [assembly: AssemblyProduct("EmuELEC-GameProgressBackup")]
-[assembly: AssemblyCopyright("Copyright © 2020")]
+[assembly: AssemblyCopyright("MIT License Copyright © 2020 Fernando Andrade")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // É possível especificar todos os valores ou usar como padrão os Números de Build e da Revisão
 // usando o "*" como mostrado abaixo:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.3.*")]
-[assembly: AssemblyFileVersion("1.0.3.0")]
+[assembly: AssemblyVersion("1.0.5")]
+[assembly: AssemblyFileVersion("1.0.5")]
