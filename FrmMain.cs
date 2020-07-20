@@ -7,6 +7,7 @@ using System.Diagnostics;
 using EmuELEC_GameProgressBackup.Model;
 using FAndradeTI.Util.Network;
 using FAndradeTI.Util.FileSystem;
+using FAndradeTI.Util.WinForms;
 
 namespace EmuELEC_GameProgressBackup
 {
@@ -16,6 +17,7 @@ namespace EmuELEC_GameProgressBackup
 
         private bool isProcessing;
         private bool isLoaded;
+        private bool isDeleteEnabled;
 
         public FrmMain()
         {
@@ -25,6 +27,7 @@ namespace EmuELEC_GameProgressBackup
 
             isProcessing = false;
             isLoaded = false;
+            isDeleteEnabled = false;
 
             btnGetInputFolder.Tag = "Input";
             btnGetInputFolder.Click += EventDisableFields;
@@ -36,11 +39,15 @@ namespace EmuELEC_GameProgressBackup
             btnGetOutputFolder.Click += EventGetFolder;
             btnGetOutputFolder.Click += EventEnableFields;
 
+            btnList.Click += BeginTask;
             btnList.Click += EventDisableFields;
             btnList.Click += EventList;
 
             btnBackup.Click += EventDisableFields;
             btnBackup.Click += EventBackup;
+
+            btnDelete.Click += EventDisableFields;
+            btnDelete.Click += EventDelete;
 
             btnOpenInputFolder.Tag = "Input";
             btnOpenInputFolder.Click += EventRunExplorer;
@@ -48,9 +55,9 @@ namespace EmuELEC_GameProgressBackup
             btnOpenOutputFolder.Tag = "Output";
             btnOpenOutputFolder.Click += EventRunExplorer;
 
-            rdoSrm.CheckedChanged += EventChangeExtension;
-            rdoStates.CheckedChanged += EventChangeExtension;
-            rdoAll.CheckedChanged += EventChangeExtension;
+            rdoSrm.Click += EventChangeExtension;
+            rdoStates.Click += EventChangeExtension;
+            rdoAll.Click += EventChangeExtension;
 
         }
 
@@ -60,6 +67,10 @@ namespace EmuELEC_GameProgressBackup
 
             rdoStates.Checked = true;
             btnBackup.Enabled = false;
+            btnDelete.Enabled = false;
+            toolStripMenuItem1.Enabled = false;
+
+            toolStripMenuItem1.Image = imageList1.Images[2];
 
             if (!Internet.ConnectionExists()) Application.Exit();
 
@@ -80,13 +91,15 @@ namespace EmuELEC_GameProgressBackup
         private async void EventList(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
-            isProcessing = true;
+
+            MenuItemClick();
+
             tsProgressBar.Value = 0;
             tsProgressBar.Maximum = 0;
-            btnBackup.Enabled = false;
 
             tvwInput.Nodes.Clear();
-            tvwInput.Enabled = true;
+            toolStripMenuItem1.Enabled = true;
+            tvwInput.Enabled = false;
 
             string[] listPath = { txtInput.Text };
 
@@ -98,14 +111,22 @@ namespace EmuELEC_GameProgressBackup
             await t.ContinueWith(x => EndTask());
         }
 
+        private async void BeginTask(object sender, EventArgs e)
+        {
+            isLoaded = false;
+            isProcessing = true;
+            isDeleteEnabled = false;
+        }
+
         public async Task EndTask()
         {
+            tvwInput.SafeInvoke(c => c.Enabled = true);
             tvwInput.SafeInvoke(c => c.ExpandAll());
             EnableFields(true);
-            btnBackup.SafeInvoke(c => c.Enabled = true);
+            //toolStripMenuItem1.Enabled = true;
             isProcessing = false;
             isLoaded = true;
-            this.Cursor = Cursors.Default;
+            this.Cursor = Cursors.Arrow;
         }
 
         public async Task EndTaskBackup()
@@ -114,7 +135,15 @@ namespace EmuELEC_GameProgressBackup
             EnableFields(true);
             isProcessing = false;
             isLoaded = false;
-            this.Cursor = Cursors.Default;
+            this.Cursor = Cursors.Arrow;
+        }
+
+        public async Task EndTaskDelete()
+        {
+            tvwInput.SafeInvoke(c => c.Refresh());
+            EnableFields(true);
+            isProcessing = false;
+            this.Cursor = Cursors.Arrow;
         }
 
         public async Task EndTaskRecursive()
@@ -122,25 +151,10 @@ namespace EmuELEC_GameProgressBackup
             await EndTask();
         }
 
-        private void EventChangeExtension(object sender, EventArgs e)
-        {
-           
-            var selectedRadio = UI.searchPatternDic.FirstOrDefault(x => x.Value == "*" + ((RadioButton)sender).Text).Key;
-
-            if (selectedRadio == UI.selectedExtension && isLoaded)
-            {
-                btnBackup.Enabled = true;
-                tvwInput.Enabled = true;
-            }
-            else
-            {
-                btnBackup.Enabled = false;
-                tvwInput.Enabled = false;
-            }
-        }
-
         private async void EventBackup(object sender, EventArgs e)
         {
+            MenuItemClick();
+
             var outputFolder = txtOutput.Text;
 
             if (!FS.FolderExists(outputFolder))
@@ -154,7 +168,6 @@ namespace EmuELEC_GameProgressBackup
             this.Cursor = Cursors.WaitCursor;
             isProcessing = true;
             tsProgressBar.Value = 0;
-            tsProgressBar.Maximum = 0;
 
             string[] listPath = { outputFolder };
 
@@ -162,6 +175,23 @@ namespace EmuELEC_GameProgressBackup
 
             var t = Task.WhenAll(myTasks);
             await t.ContinueWith(x => EndTaskBackup());
+        }
+
+        private async void EventDelete(object sender, EventArgs e)
+        {
+            MenuItemClick();
+
+            this.Cursor = Cursors.WaitCursor;
+            isProcessing = true;
+            tsProgressBar.Value = 0;
+            tsProgressBar.Maximum = 0;
+
+            int[] listRecentFiles = { 10 };
+
+            var myTasks = (from recentFiles in listRecentFiles select (Task.Run(() => Business.DeleteFiles(tvwInput, recentFiles)))).ToArray();
+
+            var t = Task.WhenAll(myTasks);
+            await t.ContinueWith(x => EndTaskDelete());
         }
 
         private void EventDisableFields(object sender, EventArgs e)
@@ -172,19 +202,42 @@ namespace EmuELEC_GameProgressBackup
         private void EnableFields(bool allow)
         {
             btnList.SafeInvoke(c => c.Enabled = allow);
-            btnBackup.SafeInvoke(c => c.Enabled = !allow);
+            btnBackup.SafeInvoke(c => c.Enabled = allow);
             btnGetInputFolder.SafeInvoke(c => c.Enabled = allow);
             btnGetOutputFolder.SafeInvoke(c => c.Enabled = allow);
             txtOutput.SafeInvoke(c => c.Enabled = allow);
             txtInput.SafeInvoke(c => c.Enabled = allow);
             grpExtensions.SafeInvoke(c => c.Enabled = allow);
             this.SafeInvoke(c => c.ControlBox = allow);
+            //toolStripMenuItem1.Enabled = allow;
 
         }
 
         private void EventEnableFields(object sender, EventArgs e)
         {
             EnableFields(true);
+        }
+
+        private void EventChangeExtension(object sender, EventArgs e)
+        {
+
+            var selectedRadio = UI.searchPatternDic.FirstOrDefault(x => x.Value == "*" + ((RadioButton)sender).Text).Key;
+
+            if (selectedRadio == UI.selectedExtension && isLoaded)
+            {
+                btnBackup.Enabled = true;
+                
+                btnDelete.Enabled = isDeleteEnabled;
+                toolStripMenuItem1.Enabled = true;
+                tvwInput.Enabled = true;
+            }
+            else
+            {
+                btnBackup.Enabled = false;
+                btnDelete.Enabled = false;
+                toolStripMenuItem1.Enabled = false;
+                tvwInput.Enabled = false;
+            }
         }
 
         private void EventGetFolder(object sender, EventArgs e)
@@ -204,8 +257,6 @@ namespace EmuELEC_GameProgressBackup
             }
         }
 
-
-
         private void EventRunExplorer(object sender, EventArgs e)
         {
             var tag = ((Button)sender).Tag;
@@ -222,8 +273,6 @@ namespace EmuELEC_GameProgressBackup
             };
             Process.Start(proc);
         }
-
-
 
         private void btnExit_Click(object sender, EventArgs e)
         {
@@ -251,6 +300,29 @@ namespace EmuELEC_GameProgressBackup
             }
         }
 
+        private void MenuItemClick()
+        {
+            if (!isDeleteEnabled)
+            {
+                toolStripMenuItem1.Text = "Enable Delete";
+                toolStripMenuItem1.Image = imageList1.Images[2];
+            }
+            else
+            {
+                toolStripMenuItem1.Text = "Disable Delete";
+                toolStripMenuItem1.Image = imageList1.Images[1];
+            }
 
+            tvwInput.ExpandAll();
+            btnDelete.Enabled = isDeleteEnabled;
+
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            isDeleteEnabled = !isDeleteEnabled;
+            MenuItemClick();
+
+        }
     }
 }

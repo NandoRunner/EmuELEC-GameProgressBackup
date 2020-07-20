@@ -1,0 +1,13 @@
+{
+  "ignoreFolderList": [
+    "downloaded_images",
+    "logos",
+    "images",
+    "image",
+    "downloaded_videos",
+    "videos",
+    "video"
+  ],
+  "inputFolder": "\\\\emuelec\\roms",
+  "oututFolder": "C:\\Temp\\EmuelecBackup"
+}

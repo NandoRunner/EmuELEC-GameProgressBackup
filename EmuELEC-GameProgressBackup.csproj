@@ -36,11 +36,14 @@
     <StartupObject>EmuELEC_GameProgressBackup.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FAndradeTI.Util.FileSystem, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\FAndradeTI.Util.FileSystem.1.0.2\lib\net472\FAndradeTI.Util.FileSystem.dll</HintPath>
+    <Reference Include="FAndradeTI.Util.FileSystem, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\FAndradeTI.Util.FileSystem.1.0.4\lib\net472\FAndradeTI.Util.FileSystem.dll</HintPath>
     </Reference>
-    <Reference Include="FAndradeTI.Util.Network, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\FAndradeTI.Util.Network.1.0.1\lib\net472\FAndradeTI.Util.Network.dll</HintPath>
+    <Reference Include="FAndradeTI.Util.Network, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\FAndradeTI.Util.Network.1.0.4\lib\net472\FAndradeTI.Util.Network.dll</HintPath>
+    </Reference>
+    <Reference Include="FAndradeTI.Util.WinForms, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\FAndradeTI.Util.WinForms.1.0.2\lib\net472\FAndradeTI.Util.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,7 +58,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExtensionMethod.cs" />
     <Compile Include="FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +82,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="config.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

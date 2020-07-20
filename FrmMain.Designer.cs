@@ -37,6 +37,8 @@
             this.btnBackup = new System.Windows.Forms.Button();
             this.imageList2 = new System.Windows.Forms.ImageList(this.components);
             this.tvwInput = new System.Windows.Forms.TreeView();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.btnList = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsProgressBar = new System.Windows.Forms.ToolStripProgressBar();
@@ -51,6 +53,9 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.btnOpenOutputFolder = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.contextMenuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.grpExtensions.SuspendLayout();
             this.SuspendLayout();
@@ -82,7 +87,7 @@
             this.txtInput.Name = "txtInput";
             this.txtInput.Size = new System.Drawing.Size(522, 23);
             this.txtInput.TabIndex = 2;
-            this.txtInput.Text = "\\\\emuelec\\roms";
+            this.txtInput.Text = "\\\\emuelec\\roms\\megadrive";
             // 
             // txtOutput
             // 
@@ -91,7 +96,7 @@
             this.txtOutput.Name = "txtOutput";
             this.txtOutput.Size = new System.Drawing.Size(522, 23);
             this.txtOutput.TabIndex = 3;
-            this.txtOutput.Text = "c:\\temp\\emuelecstatebackup";
+            this.txtOutput.Text = "c:\\temp\\EmuELEC-GameProgressBackup";
             // 
             // btnBackup
             // 
@@ -99,7 +104,7 @@
             this.btnBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnBackup.ImageIndex = 1;
             this.btnBackup.ImageList = this.imageList2;
-            this.btnBackup.Location = new System.Drawing.Point(404, 99);
+            this.btnBackup.Location = new System.Drawing.Point(376, 99);
             this.btnBackup.Name = "btnBackup";
             this.btnBackup.Size = new System.Drawing.Size(112, 48);
             this.btnBackup.TabIndex = 4;
@@ -114,14 +119,31 @@
             this.imageList2.Images.SetKeyName(0, "exit.png");
             this.imageList2.Images.SetKeyName(1, "backup.png");
             this.imageList2.Images.SetKeyName(2, "log.png");
+            this.imageList2.Images.SetKeyName(3, "doc-delete.png");
             // 
             // tvwInput
             // 
+            this.tvwInput.ContextMenuStrip = this.contextMenuStrip1;
             this.tvwInput.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tvwInput.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.tvwInput.Location = new System.Drawing.Point(32, 156);
             this.tvwInput.Name = "tvwInput";
             this.tvwInput.Size = new System.Drawing.Size(712, 359);
             this.tvwInput.TabIndex = 5;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(145, 26);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(144, 22);
+            this.toolStripMenuItem1.Text = "Enable delete";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // btnList
             // 
@@ -129,7 +151,7 @@
             this.btnList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnList.ImageIndex = 2;
             this.btnList.ImageList = this.imageList2;
-            this.btnList.Location = new System.Drawing.Point(277, 99);
+            this.btnList.Location = new System.Drawing.Point(258, 99);
             this.btnList.Name = "btnList";
             this.btnList.Size = new System.Drawing.Size(112, 48);
             this.btnList.TabIndex = 6;
@@ -210,11 +232,11 @@
             this.rdoStates.Checked = true;
             this.rdoStates.Location = new System.Drawing.Point(17, 23);
             this.rdoStates.Name = "rdoStates";
-            this.rdoStates.Size = new System.Drawing.Size(80, 20);
+            this.rdoStates.Size = new System.Drawing.Size(66, 20);
             this.rdoStates.TabIndex = 0;
             this.rdoStates.TabStop = true;
             this.rdoStates.Tag = "0";
-            this.rdoStates.Text = ".state??";
+            this.rdoStates.Text = ".state";
             this.rdoStates.UseVisualStyleBackColor = true;
             // 
             // btnGetOutputFolder
@@ -241,6 +263,8 @@
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "folder-open.png");
+            this.imageList1.Images.SetKeyName(1, "cross-uncheck.png");
+            this.imageList1.Images.SetKeyName(2, "tick-check.png");
             // 
             // btnOpenOutputFolder
             // 
@@ -267,6 +291,27 @@
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Enabled = false;
+            this.btnDelete.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDelete.ImageIndex = 3;
+            this.btnDelete.ImageList = this.imageList2;
+            this.btnDelete.Location = new System.Drawing.Point(494, 99);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(112, 48);
+            this.btnDelete.TabIndex = 35;
+            this.btnDelete.Text = "&Delete";
+            this.btnDelete.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip1.SetToolTip(this.btnDelete, "Delete all but the last 10 recent sates of each game");
+            this.btnDelete.UseVisualStyleBackColor = true;
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.toolTip1.ToolTipTitle = "Delete";
+            // 
             // FrmMain
             // 
             this.AcceptButton = this.btnList;
@@ -274,6 +319,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnExit;
             this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnOpenOutputFolder);
             this.Controls.Add(this.btnOpenInputFolder);
@@ -295,6 +341,7 @@
             this.Text = "EmuELEC Game Progress Backup ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
             this.Load += new System.EventHandler(this.FrmMain_Load);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.grpExtensions.ResumeLayout(false);
@@ -327,6 +374,10 @@
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ImageList imageList2;
         private System.Windows.Forms.ToolStripProgressBar tsProgressBar;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using FAndradeTI.Util.FileSystem;
+using FAndradeTI.Util.WinForms;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,15 +11,17 @@ namespace EmuELEC_GameProgressBackup
     public static class Business
     {
         public static int found;
+        public static int foundDir;
         public readonly static string[] ignoreFolderList = { "downloaded_images", "logos", "images", "image", "downloaded_videos", "videos", "video" };
 
         public static List<string> fileList = new List<string>();
+        public static List<string> dirList = new List<string>();
 
         public static void BackupFiles(TreeView treeView, string path)
         {
             DateTime dt = DateTime.Now;
 
-            //todo: criar destino se não existir?
+            StatusStripControl.InitStatusStrip(string.Empty, fileList.Count);
 
             //todo: criar caminhos relativos?
             var i = 1;
@@ -27,11 +30,12 @@ namespace EmuELEC_GameProgressBackup
 
             foreach (var file in fileList)
             {
-                UI.Showinfo($"{i++}/{found} - {file}");
+                StatusStripControl.UpdateProgressBar();
+                StatusStripControl.UpdateLabel($"{i++}/{found} - {file}");
                 FS.CopyFileIfNewer(file, path);
             }
 
-            UI.Showinfo($"{found} {UI.GetExtensionName()} files Backup completed in {DateTime.Now.Subtract(dt).TotalSeconds.ToString("###.#")} seconds");
+            StatusStripControl.UpdateLabel($"{found} {UI.GetExtensionName()} files Backup completed in {DateTime.Now.Subtract(dt).TotalSeconds.ToString("#.#")} seconds");
 
             found = 0;
             fileList.Clear();
@@ -42,58 +46,131 @@ namespace EmuELEC_GameProgressBackup
         {
             DateTime dt = DateTime.Now;
             found = 0;
+            foundDir = 0;
             fileList.Clear();
+            dirList.Clear();
 
             try
-            { 
-
-            var stack = new Stack<TreeNode>();
-            var rootDirectory = new DirectoryInfo(path);
-            var node = new TreeNode(rootDirectory.Name) { Tag = rootDirectory };
-            stack.Push(node);
-
-            UI.Showinfo($"Preparing to read input folder ...");
-
-
-            while (stack.Count > 0)
             {
-                var currentNode = stack.Pop();
-                var directoryInfo = (DirectoryInfo)currentNode.Tag;
-                                
-                foreach (var directory in directoryInfo.GetDirectories())
+                var stack = new Stack<TreeNode>();
+                var rootDirectory = new DirectoryInfo(path);
+                var node = new TreeNode(rootDirectory.Name) { Tag = rootDirectory };
+                stack.Push(node);
+
+                StatusStripControl.UpdateLabel($"Preparing to read input folder ...");
+
+                while (stack.Count > 0)
                 {
-                    UI.UpdateProgressBar();
-                    if (ignoreFolderList.Contains(directory.Name)) continue;
+                    var currentNode = stack.Pop();
+                    var directoryInfo = (DirectoryInfo)currentNode.Tag;
 
-                    UI.Showinfo($"{found} {UI.GetExtensionName()} files found - Reading '{directory.FullName}' ...");
+                    var query = directoryInfo.GetFiles(UI.GetSearchPattern(), SearchOption.TopDirectoryOnly).OrderBy(file => file.Name);
 
-                    if (directory.GetFiles(UI.GetSearchPattern(), SearchOption.AllDirectories).Length == 0) continue;
+                    found += query.Count();
+                    StatusStripControl.UpdateLabel($"{found} {UI.GetExtensionName()} files found - Reading '{directoryInfo.FullName}' ...");
 
-                    found += directory.GetFiles(UI.GetSearchPattern(), SearchOption.TopDirectoryOnly).Length;
-                    
-                    UI.Showinfo($"{found} {UI.GetExtensionName()} files found - Reading '{directory.FullName}' ...");
 
-                    var childDirectoryNode = new TreeNode(directory.Name) { Tag = directory };
-                    currentNode.Nodes.Add(childDirectoryNode);
-                    stack.Push(childDirectoryNode);
+                    foreach (var directory in directoryInfo.GetDirectories().OrderBy(dir => dir.Name))
+                    {
+                        if (ignoreFolderList.Contains(directory.Name)) continue;
+
+                        if (directory.GetFiles(UI.GetSearchPattern(), SearchOption.AllDirectories).Length == 0) continue;
+
+                        var childDirectoryNode = new TreeNode(directory.Name) { Tag = directory };
+                        currentNode.Nodes.Add(childDirectoryNode);
+                        stack.Push(childDirectoryNode);
+                    }
+
+                    foreach (var file in query)
+                    {
+                        currentNode.Nodes.Add(new TreeNode(file.Name));
+                        fileList.Add(file.FullName);
+
+                        if (!dirList.Contains(file.DirectoryName))
+                        {
+                            dirList.Add(file.DirectoryName);
+                            foundDir++;
+                        }
+                    }
 
                 }
-                foreach (var file in directoryInfo.GetFiles(UI.GetSearchPattern()))
-                {
-                    currentNode.Nodes.Add(new TreeNode(file.Name));
-                    fileList.Add(file.FullName);
-                }
-            }
 
-            treeView.SafeInvoke(c => c.Nodes.Add(node));
-            
-            UI.Showinfo($"{found} {UI.GetExtensionName()} files found - Reading input completed in {DateTime.Now.Subtract(dt).TotalSeconds.ToString("###.#")} seconds");
+                treeView.SafeInvoke(c => c.Nodes.Add(node));
+
+                StatusStripControl.UpdateLabel($"{found} {UI.GetExtensionName()} files found - Reading input completed in {DateTime.Now.Subtract(dt).TotalSeconds.ToString("###.#")} seconds");
             }
             catch (Exception ex)
             {
-                UI.Showinfo($"Error: {ex.Message} - Try again");
+                StatusStripControl.UpdateLabel($"Error: {ex.Message} - Try again");
             }
         }
         #endregion
+
+        public static void DeleteFiles(TreeView treeView, int recentFiles)
+        {
+            //todo: \\roms not working
+
+            DateTime dt = DateTime.Now;
+
+            StatusStripControl.InitStatusStrip(string.Empty, fileList.Count);
+
+            dirList.Sort();
+
+            TreeNode parentNode = null;
+
+            var deletedFiles = 0;
+
+            foreach (var dir in dirList)
+            {
+                var dic = new Dictionary<string, int>();
+                
+                var myDir = new DirectoryInfo(dir);
+                
+                var list = myDir.GetFiles(UI.GetSearchPattern(), SearchOption.TopDirectoryOnly);
+                
+                var query = list.OrderByDescending(file => file.CreationTime);
+
+                if (parentNode == null)
+                {
+                    parentNode = treeView.SafeInvoke(c => c.Nodes.OfType<TreeNode>()
+                                .FirstOrDefault(node => node.Text.Equals(dir.Split('\\').Last())));
+                }
+                else
+                {
+                    parentNode = parentNode.Nodes.OfType<TreeNode>()
+                                .FirstOrDefault(node => node.Text.Equals(dir.Split('\\').Last()));
+                }
+
+                if (parentNode == null) continue;
+                var i = 0;
+                foreach (var file in query)
+                {
+                    i++;
+                    var pureName = file.Name.Replace(file.Extension, string.Empty);
+
+                    if (!dic.ContainsKey(pureName))
+                    {
+                        dic.Add(pureName, 1);
+                        continue;
+                    }
+
+                    if (dic[pureName]++ >= recentFiles)
+                    {
+                        var result = parentNode.Nodes.OfType<TreeNode>()
+                            .FirstOrDefault(node => node.Text.Equals(file.Name));
+                        treeView.SafeInvoke(c => c.Nodes.Remove(result));
+                        file.Delete();
+                        deletedFiles++;
+                    }
+                }
+
+                StatusStripControl.UpdateProgressBar();
+                StatusStripControl.UpdateLabel($"{i++}/{foundDir} - {dir}");
+            }
+
+            StatusStripControl.UpdateLabel($"{deletedFiles} {UI.GetExtensionName()} files found - Delete of all but the last {recentFiles} recents files completed in {DateTime.Now.Subtract(dt).TotalSeconds.ToString("#.#")} seconds");
+
+        }
+
     }
 }
