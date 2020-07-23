@@ -23,7 +23,7 @@ namespace EmuELEC_GameProgressBackup
         {
             InitializeComponent();
 
-            BASE_EMUELEC = "\\emuelec";
+            BASE_EMUELEC = "\\\\emuelec";
 
             isProcessing = false;
             isLoaded = false;
@@ -61,10 +61,17 @@ namespace EmuELEC_GameProgressBackup
 
         }
 
+        private void SetTitle(bool online = true)
+        {
+            var aux = string.Empty;
+
+            if (!online) aux = $"{new String(' ', 10)}(Offline)";
+
+            this.Text = $"{Application.ProductName}{new String(' ', 10)}Version: {Application.ProductVersion}{aux}";
+        }
+
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            this.Text = $"{Application.ProductName}{new String(' ', 10)}Version: {Application.ProductVersion}";
-
             rdoStates.Checked = true;
             btnBackup.Enabled = false;
             btnDelete.Enabled = false;
@@ -72,24 +79,39 @@ namespace EmuELEC_GameProgressBackup
 
             toolStripMenuItem1.Image = imageList1.Images[2];
 
-            if (!Internet.ConnectionExists()) Application.Exit();
+            CheckConnectivity();
 
-            var ret = DialogResult.Retry;
-
-            while (ret == DialogResult.Retry)
+        }
+        private bool CheckConnectivity()
+        {
+            var ret = true;
+            if (!Internet.ConnectionExists())
             {
-                if (!Internet.HostExists(BASE_EMUELEC.Replace("\\", "")))
-                {
-                    ret = MessageBox.Show($"{BASE_EMUELEC} is unavailable\r\n\r\nPlease check if EmuELEC is running and its wifi is properly setup", "EmuELEC communication error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
-                }
-                else ret = DialogResult.OK;
+                MessageBox.Show($"Internet connection is unavailable\r\n\r\nEmuELEC communication cannot be done", "Internet connection error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                ret = false;
             }
 
-            if (ret == DialogResult.Cancel) Application.Exit();
+            if (!Internet.HostExists(BASE_EMUELEC.Replace("\\", "")))
+            {
+                ret = false;
+                MessageBox.Show($"{BASE_EMUELEC} is unavailable\r\n\r\nPlease check if EmuELEC is running and its wifi is properly setup", "EmuELEC communication error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+
+            SetTitle(ret);
+
+            return ret;
         }
 
         private async void EventList(object sender, EventArgs e)
         {
+            if (!CheckConnectivity())
+            {
+                EventEnableFields(sender, e);
+                return;
+            }
+            
             this.Cursor = Cursors.WaitCursor;
 
             MenuItemClick();
@@ -202,7 +224,14 @@ namespace EmuELEC_GameProgressBackup
         private void EnableFields(bool allow)
         {
             btnList.SafeInvoke(c => c.Enabled = allow);
+            
+            if (isLoaded) { 
             btnBackup.SafeInvoke(c => c.Enabled = allow);
+            }
+            else
+            {
+                btnBackup.SafeInvoke(c => c.Enabled = false);
+            }
             btnGetInputFolder.SafeInvoke(c => c.Enabled = allow);
             btnGetOutputFolder.SafeInvoke(c => c.Enabled = allow);
             txtOutput.SafeInvoke(c => c.Enabled = allow);
@@ -226,7 +255,7 @@ namespace EmuELEC_GameProgressBackup
             if (selectedRadio == UI.selectedExtension && isLoaded)
             {
                 btnBackup.Enabled = true;
-                
+
                 btnDelete.Enabled = isDeleteEnabled;
                 toolStripMenuItem1.Enabled = true;
                 tvwInput.Enabled = true;
@@ -261,17 +290,7 @@ namespace EmuELEC_GameProgressBackup
         {
             var tag = ((Button)sender).Tag;
 
-            Run("explorer.exe", ((TextBox)this.Controls["txt" + tag]).Text);
-        }
-
-        private void Run(string command, string args = "")
-        {
-            var proc = new ProcessStartInfo
-            {
-                FileName = command,
-                Arguments = args
-            };
-            Process.Start(proc);
+            ProcManager.RunExplorer(((TextBox)this.Controls["txt" + tag]).Text);
         }
 
         private void btnExit_Click(object sender, EventArgs e)
