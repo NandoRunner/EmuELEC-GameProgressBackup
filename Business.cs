@@ -83,7 +83,7 @@ namespace EmuELEC_GameProgressBackup
 
                     foreach (var file in query)
                     {
-                        currentNode.Nodes.Add(new TreeNode(file.Name));
+                        currentNode.Nodes.Add(file.DirectoryName, file.Name);
                         fileList.Add(file.FullName);
 
                         if (!dirList.Contains(file.DirectoryName))
@@ -116,32 +116,23 @@ namespace EmuELEC_GameProgressBackup
 
             dirList.Sort();
 
-            TreeNode parentNode = null;
-
             var deletedFiles = 0;
 
             foreach (var dir in dirList)
             {
-                var dic = new Dictionary<string, int>();
-                
-                var myDir = new DirectoryInfo(dir);
-                
-                var list = myDir.GetFiles(UI.GetSearchPattern(), SearchOption.TopDirectoryOnly);
-                
-                var query = list.OrderByDescending(file => file.CreationTime);
-
-                if (parentNode == null)
-                {
-                    parentNode = treeView.SafeInvoke(c => c.Nodes.OfType<TreeNode>()
-                                .FirstOrDefault(node => node.Text.Equals(dir.Split('\\').Last())));
-                }
-                else
-                {
-                    parentNode = parentNode.Nodes.OfType<TreeNode>()
-                                .FirstOrDefault(node => node.Text.Equals(dir.Split('\\').Last()));
-                }
+                var parentNode = treeView.SafeInvoke(c => c.Nodes.Find(dir, true));
 
                 if (parentNode == null) continue;
+
+                var dic = new Dictionary<string, int>();
+
+                var myDir = new DirectoryInfo(dir);
+
+                var list = myDir.GetFiles(UI.GetSearchPattern(), SearchOption.TopDirectoryOnly);
+
+                var query = list.OrderByDescending(file => file.CreationTime);
+
+
                 var i = 0;
                 foreach (var file in query)
                 {
@@ -156,7 +147,7 @@ namespace EmuELEC_GameProgressBackup
 
                     if (dic[pureName]++ >= recentFiles)
                     {
-                        var result = parentNode.Nodes.OfType<TreeNode>()
+                        var result = parentNode.OfType<TreeNode>()
                             .FirstOrDefault(node => node.Text.Equals(file.Name));
                         treeView.SafeInvoke(c => c.Nodes.Remove(result));
                         file.Delete();

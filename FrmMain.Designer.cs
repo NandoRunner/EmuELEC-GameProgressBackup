@@ -87,7 +87,7 @@
             this.txtInput.Name = "txtInput";
             this.txtInput.Size = new System.Drawing.Size(522, 23);
             this.txtInput.TabIndex = 2;
-            this.txtInput.Text = "\\\\emuelec\\roms\\megadrive";
+            this.txtInput.Text = "\\\\emuelec\\roms";
             // 
             // txtOutput
             // 
@@ -335,7 +335,8 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MinimizeBox = false;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EmuELEC Game Progress Backup ";

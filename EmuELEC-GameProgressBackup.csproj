@@ -35,6 +35,9 @@
   <PropertyGroup>
     <StartupObject>EmuELEC_GameProgressBackup.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Game-Controller.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FAndradeTI.Util.FileSystem, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\FAndradeTI.Util.FileSystem.1.0.4\lib\net472\FAndradeTI.Util.FileSystem.dll</HintPath>
@@ -99,6 +102,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Game-Controller.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

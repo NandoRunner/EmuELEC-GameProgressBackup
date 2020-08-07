@@ -144,27 +144,27 @@ namespace EmuELEC_GameProgressBackup
         {
             tvwInput.SafeInvoke(c => c.Enabled = true);
             tvwInput.SafeInvoke(c => c.ExpandAll());
-            EnableFields(true);
             //toolStripMenuItem1.Enabled = true;
             isProcessing = false;
             isLoaded = true;
+            EnableFields(true);
             this.Cursor = Cursors.Arrow;
         }
 
         public async Task EndTaskBackup()
         {
             tvwInput.SafeInvoke(c => c.Nodes.Clear());
-            EnableFields(true);
             isProcessing = false;
             isLoaded = false;
+            EnableFields(true);
             this.Cursor = Cursors.Arrow;
         }
 
         public async Task EndTaskDelete()
         {
             tvwInput.SafeInvoke(c => c.Refresh());
-            EnableFields(true);
             isProcessing = false;
+            EnableFields(true);
             this.Cursor = Cursors.Arrow;
         }
 
@@ -226,7 +226,7 @@ namespace EmuELEC_GameProgressBackup
             btnList.SafeInvoke(c => c.Enabled = allow);
             
             if (isLoaded) { 
-            btnBackup.SafeInvoke(c => c.Enabled = allow);
+                btnBackup.SafeInvoke(c => c.Enabled = allow);
             }
             else
             {
