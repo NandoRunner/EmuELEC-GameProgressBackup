@@ -35,7 +35,7 @@ namespace EmuELEC_GameProgressBackup
                 FS.CopyFileIfNewer(file, path);
             }
 
-            StatusStripControl.UpdateLabel($"{found} {UI.GetExtensionName()} files Backup completed in {DateTime.Now.Subtract(dt).TotalSeconds.ToString("#.#")} seconds");
+            StatusStripControl.UpdateLabel($"{found} {UI.GetExtensionName()} files backup completed in {DateTime.Now.Subtract(dt).TotalSeconds.ToString("#.#")} seconds");
 
             found = 0;
             fileList.Clear();
@@ -159,7 +159,7 @@ namespace EmuELEC_GameProgressBackup
                 StatusStripControl.UpdateLabel($"{i++}/{foundDir} - {dir}");
             }
 
-            StatusStripControl.UpdateLabel($"{deletedFiles} {UI.GetExtensionName()} files found - Delete of all but the last {recentFiles} recents files completed in {DateTime.Now.Subtract(dt).TotalSeconds.ToString("#.#")} seconds");
+            StatusStripControl.UpdateLabel($"{deletedFiles} {UI.GetExtensionName()} files deleted in {DateTime.Now.Subtract(dt).TotalSeconds.ToString("#.#")} seconds");
 
         }
 
