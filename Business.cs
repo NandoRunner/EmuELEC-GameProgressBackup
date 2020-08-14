@@ -150,6 +150,7 @@ namespace EmuELEC_GameProgressBackup
                         var result = parentNode.OfType<TreeNode>()
                             .FirstOrDefault(node => node.Text.Equals(file.Name));
                         treeView.SafeInvoke(c => c.Nodes.Remove(result));
+                        fileList.Remove(file.FullName);
                         file.Delete();
                         deletedFiles++;
                     }
