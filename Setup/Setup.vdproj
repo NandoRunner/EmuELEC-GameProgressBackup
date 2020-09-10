@@ -70,12 +70,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_11823AFA0C19121B380DF7E586AB8A6A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_27382141B29E4ACD86B466743A27F214"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -109,6 +103,12 @@
         "OwnerKey" = "8:_D7FCF2575FCE9808EC6B29789234A5EE"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_11823AFA0C19121B380DF7E586AB8A6A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -127,6 +127,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -143,6 +151,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -456,15 +472,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:FAndradeTI EmuELEC-GameProgressBackup"
-        "ProductCode" = "8:{77118C1F-3A99-4009-BD85-3BED819957B6}"
-        "PackageCode" = "8:{909DD190-6BFD-40B8-BADC-411A9A237076}"
+        "ProductCode" = "8:{1BFC802D-7D1E-4FAF-BA20-2F84D77B5497}"
+        "PackageCode" = "8:{86661BCD-C2C0-4546-8C87-60AC1BB66DCC}"
         "UpgradeCode" = "8:{AEDB4086-B3E9-46E6-ADB1-451981A50615}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.13"
+        "ProductVersion" = "8:1.0.14"
         "Manufacturer" = "8:FAndradeTI"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
