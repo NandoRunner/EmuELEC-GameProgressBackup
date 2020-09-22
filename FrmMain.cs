@@ -8,6 +8,7 @@ using EmuELEC_GameProgressBackup.Model;
 using FAndradeTI.Util.Network;
 using FAndradeTI.Util.FileSystem;
 using FAndradeTI.Util.WinForms;
+using System.Reflection;
 
 namespace EmuELEC_GameProgressBackup
 {
@@ -15,10 +16,9 @@ namespace EmuELEC_GameProgressBackup
     {
         public readonly string BASE_EMUELEC;
 
-        private bool isProcessing;
-        private bool isLoaded;
         private bool isDeleteEnabled;
-
+        private bool isLoaded;
+        private bool isProcessing;
         public FrmMain()
         {
             InitializeComponent();
@@ -60,86 +60,6 @@ namespace EmuELEC_GameProgressBackup
             rdoAll.Click += EventChangeExtension;
 
         }
-
-        private void SetTitle(bool online = true)
-        {
-            var aux = string.Empty;
-
-            if (!online) aux = $"{new String(' ', 10)}(Offline)";
-
-            this.Text = $"{Application.ProductName}{new String(' ', 10)}Version: {Application.ProductVersion}{aux}";
-        }
-
-        private void FrmMain_Load(object sender, EventArgs e)
-        {
-            rdoStates.Checked = true;
-            btnBackup.Enabled = false;
-            btnDelete.Enabled = false;
-            toolStripMenuItem1.Enabled = false;
-
-            toolStripMenuItem1.Image = imageList1.Images[2];
-
-            CheckConnectivity();
-
-        }
-        private bool CheckConnectivity()
-        {
-            var ret = true;
-            if (!Internet.ConnectionExists())
-            {
-                MessageBox.Show($"Internet connection is unavailable\r\n\r\nEmuELEC communication cannot be done", "Internet connection error", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                ret = false;
-            }
-
-            if (!Internet.HostExists(BASE_EMUELEC.Replace("\\", "")))
-            {
-                ret = false;
-                MessageBox.Show($"{BASE_EMUELEC} is unavailable\r\n\r\nPlease check if EmuELEC is running and its wifi is properly setup", "EmuELEC communication error", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
-
-            SetTitle(ret);
-
-            return ret;
-        }
-
-        private async void EventList(object sender, EventArgs e)
-        {
-            if (!CheckConnectivity())
-            {
-                EventEnableFields(sender, e);
-                return;
-            }
-            
-            this.Cursor = Cursors.WaitCursor;
-
-            MenuItemClick();
-
-            tsProgressBar.Value = 0;
-            tsProgressBar.Maximum = 0;
-
-            tvwInput.Nodes.Clear();
-            toolStripMenuItem1.Enabled = true;
-            tvwInput.Enabled = false;
-
-            string[] listPath = { txtInput.Text };
-
-            UI.selectedExtension = rdoAll.Checked ? FileExtensions.All : (rdoSrm.Checked ? FileExtensions.Srm : FileExtensions.State);
-
-            var myTasks = (from path in listPath select (Task.Run(() => Business.ListDirectory(tvwInput, path)))).ToArray();
-
-            var t = Task.WhenAll(myTasks);
-            await t.ContinueWith(x => EndTask());
-        }
-
-        private async void BeginTask(object sender, EventArgs e)
-        {
-            isLoaded = false;
-            isProcessing = true;
-            isDeleteEnabled = false;
-        }
-
         public async Task EndTask()
         {
             tvwInput.SafeInvoke(c => c.Enabled = true);
@@ -173,8 +93,76 @@ namespace EmuELEC_GameProgressBackup
             await EndTask();
         }
 
+        private async void BeginTask(object sender, EventArgs e)
+        {
+            isLoaded = false;
+            isProcessing = true;
+            isDeleteEnabled = false;
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private bool CheckConnectivity()
+        {
+            var ret = true;
+            if (!Internet.ConnectionExists())
+            {
+                MessageBox.Show($"Internet connection is unavailable\r\n\r\nEmuELEC communication cannot be done", "Internet connection error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                ret = false;
+            }
+
+            if (!Internet.HostExists(BASE_EMUELEC.Replace("\\", "")))
+            {
+                ret = false;
+                MessageBox.Show($"{BASE_EMUELEC} is unavailable\r\n\r\nPlease check if EmuELEC is running and its wifi is properly setup", "EmuELEC communication error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+
+            SetTitle(ret);
+
+            return ret;
+        }
+
+        private void EnableFields(bool allow)
+        {
+            btnList.SafeInvoke(c => c.Enabled = allow);
+
+            if (isLoaded)
+            {
+                btnBackup.SafeInvoke(c => c.Enabled = allow);
+                if (allow && isDeleteEnabled)
+                {
+                    btnDelete.SafeInvoke(c => c.Enabled = allow);
+                }
+                else
+                {
+                    btnDelete.SafeInvoke(c => c.Enabled = false);
+                }
+
+            }
+            else
+            {
+                btnBackup.SafeInvoke(c => c.Enabled = false);
+                btnDelete.SafeInvoke(c => c.Enabled = false);
+            }
+            btnGetInputFolder.SafeInvoke(c => c.Enabled = allow);
+            btnGetOutputFolder.SafeInvoke(c => c.Enabled = allow);
+            txtOutput.SafeInvoke(c => c.Enabled = allow);
+            txtInput.SafeInvoke(c => c.Enabled = allow);
+            grpExtensions.SafeInvoke(c => c.Enabled = allow);
+            this.SafeInvoke(c => c.ControlBox = allow);
+            //toolStripMenuItem1.Enabled = allow;
+
+        }
+
         private async void EventBackup(object sender, EventArgs e)
         {
+            isDeleteEnabled = false;
+
             MenuItemClick();
 
             var outputFolder = txtOutput.Text;
@@ -199,54 +187,6 @@ namespace EmuELEC_GameProgressBackup
             await t.ContinueWith(x => EndTaskBackup());
         }
 
-        private async void EventDelete(object sender, EventArgs e)
-        {
-            MenuItemClick();
-
-            this.Cursor = Cursors.WaitCursor;
-            isProcessing = true;
-            tsProgressBar.Value = 0;
-            tsProgressBar.Maximum = 0;
-
-            int[] listRecentFiles = { 10 };
-
-            var myTasks = (from recentFiles in listRecentFiles select (Task.Run(() => Business.DeleteFiles(tvwInput, recentFiles)))).ToArray();
-
-            var t = Task.WhenAll(myTasks);
-            await t.ContinueWith(x => EndTaskDelete());
-        }
-
-        private void EventDisableFields(object sender, EventArgs e)
-        {
-            EnableFields(false);
-        }
-
-        private void EnableFields(bool allow)
-        {
-            btnList.SafeInvoke(c => c.Enabled = allow);
-            
-            if (isLoaded) { 
-                btnBackup.SafeInvoke(c => c.Enabled = allow);
-            }
-            else
-            {
-                btnBackup.SafeInvoke(c => c.Enabled = false);
-            }
-            btnGetInputFolder.SafeInvoke(c => c.Enabled = allow);
-            btnGetOutputFolder.SafeInvoke(c => c.Enabled = allow);
-            txtOutput.SafeInvoke(c => c.Enabled = allow);
-            txtInput.SafeInvoke(c => c.Enabled = allow);
-            grpExtensions.SafeInvoke(c => c.Enabled = allow);
-            this.SafeInvoke(c => c.ControlBox = allow);
-            //toolStripMenuItem1.Enabled = allow;
-
-        }
-
-        private void EventEnableFields(object sender, EventArgs e)
-        {
-            EnableFields(true);
-        }
-
         private void EventChangeExtension(object sender, EventArgs e)
         {
 
@@ -269,6 +209,33 @@ namespace EmuELEC_GameProgressBackup
             }
         }
 
+        private async void EventDelete(object sender, EventArgs e)
+        {
+            MenuItemClick();
+
+            this.Cursor = Cursors.WaitCursor;
+            isProcessing = true;
+            tsProgressBar.Value = 0;
+            tsProgressBar.Maximum = 0;
+
+            int[] listRecentFiles = { 10 };
+
+            var myTasks = (from recentFiles in listRecentFiles select (Task.Run(() => Business.DeleteFiles(tvwInput, recentFiles)))).ToArray();
+
+            var t = Task.WhenAll(myTasks);
+            await t.ContinueWith(x => EndTaskDelete());
+        }
+
+        private void EventDisableFields(object sender, EventArgs e)
+        {
+            EnableFields(false);
+        }
+
+        private void EventEnableFields(object sender, EventArgs e)
+        {
+            EnableFields(true);
+        }
+
         private void EventGetFolder(object sender, EventArgs e)
         {
             var tag = ((Button)sender).Tag;
@@ -286,16 +253,41 @@ namespace EmuELEC_GameProgressBackup
             }
         }
 
+        private async void EventList(object sender, EventArgs e)
+        {
+            if (!CheckConnectivity())
+            {
+                EventEnableFields(sender, e);
+                return;
+            }
+
+            this.Cursor = Cursors.WaitCursor;
+
+            isDeleteEnabled = false;
+            MenuItemClick();
+
+            tsProgressBar.Value = 0;
+            tsProgressBar.Maximum = 0;
+
+            tvwInput.Nodes.Clear();
+            toolStripMenuItem1.Enabled = true;
+            tvwInput.Enabled = false;
+
+            string[] listPath = { txtInput.Text };
+
+            UI.selectedExtension = rdoAll.Checked ? FileExtensions.All : (rdoSrm.Checked ? FileExtensions.Srm : FileExtensions.State);
+
+            var myTasks = (from path in listPath select (Task.Run(() => Business.ListDirectory(tvwInput, path)))).ToArray();
+
+            var t = Task.WhenAll(myTasks);
+            await t.ContinueWith(x => EndTask());
+        }
+
         private void EventRunExplorer(object sender, EventArgs e)
         {
             var tag = ((Button)sender).Tag;
 
             ProcManager.RunExplorer(((TextBox)this.Controls["txt" + tag]).Text);
-        }
-
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            this.Close();
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -319,6 +311,19 @@ namespace EmuELEC_GameProgressBackup
             }
         }
 
+        private void FrmMain_Load(object sender, EventArgs e)
+        {
+            rdoStates.Checked = true;
+            btnBackup.Enabled = false;
+            btnDelete.Enabled = false;
+            toolStripMenuItem1.Enabled = false;
+
+            toolStripMenuItem1.Image = imageList1.Images[2];
+
+            CheckConnectivity();
+
+        }
+
         private void MenuItemClick()
         {
             if (!isDeleteEnabled)
@@ -334,9 +339,18 @@ namespace EmuELEC_GameProgressBackup
 
             tvwInput.ExpandAll();
             btnDelete.Enabled = isDeleteEnabled;
-
         }
 
+        private void SetTitle(bool online = true)
+        {
+            var aux = string.Empty;
+
+            if (!online) aux = $"{new String(' ', 10)}(Offline)";
+
+            string title = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyTitleAttribute>().Title;
+
+            this.Text = $"{title}{new String(' ', 10)}Version: {Application.ProductVersion}{aux}";
+        }
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             isDeleteEnabled = !isDeleteEnabled;

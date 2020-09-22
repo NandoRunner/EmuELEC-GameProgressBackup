@@ -69,5 +69,14 @@ namespace EmuELEC_GameProgressBackup.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O aplicativo já está em execução!.
+        /// </summary>
+        internal static string MessageBoxText01 {
+            get {
+                return ResourceManager.GetString("MessageBoxText01", resourceCulture);
+            }
+        }
     }
 }

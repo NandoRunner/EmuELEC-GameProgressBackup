@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // As informações gerais sobre um assembly são controladas por
 // conjunto de atributos. Altere estes valores de atributo para modificar as informações
 // associadas a um assembly.
-[assembly: AssemblyTitle("EmuELEC-GameProgressBackup")]
+[assembly: AssemblyTitle("EmuELEC Game Progress Backup")]
 [assembly: AssemblyDescription("Tool for backup all game game progress in you EmuELEC")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Fernando Andrade (NandoRunner)")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // É possível especificar todos os valores ou usar como padrão os Números de Build e da Revisão
 // usando o "*" como mostrado abaixo:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.14")]
-[assembly: AssemblyFileVersion("1.0.14")]
+[assembly: AssemblyVersion("1.0.16")]
+[assembly: AssemblyFileVersion("1.0.16")]

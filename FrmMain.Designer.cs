@@ -104,7 +104,7 @@
             this.btnBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnBackup.ImageIndex = 1;
             this.btnBackup.ImageList = this.imageList2;
-            this.btnBackup.Location = new System.Drawing.Point(376, 99);
+            this.btnBackup.Location = new System.Drawing.Point(494, 99);
             this.btnBackup.Name = "btnBackup";
             this.btnBackup.Size = new System.Drawing.Size(112, 48);
             this.btnBackup.TabIndex = 4;
@@ -298,7 +298,7 @@
             this.btnDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDelete.ImageIndex = 3;
             this.btnDelete.ImageList = this.imageList2;
-            this.btnDelete.Location = new System.Drawing.Point(494, 99);
+            this.btnDelete.Location = new System.Drawing.Point(376, 99);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(112, 48);
             this.btnDelete.TabIndex = 35;
@@ -334,7 +334,6 @@
             this.Controls.Add(this.txtInput);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FrmMain";
