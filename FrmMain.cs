@@ -347,9 +347,9 @@ namespace EmuELEC_GameProgressBackup
 
             if (!online) aux = $"{new String(' ', 10)}(Offline)";
 
-            string title = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyTitleAttribute>().Title;
+            //string title = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyTitleAttribute>().Title;
 
-            this.Text = $"{title}{new String(' ', 10)}Version: {Application.ProductVersion}{aux}";
+            this.Text = $"{AppInfo.GetTitle()}{aux}";
         }
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
