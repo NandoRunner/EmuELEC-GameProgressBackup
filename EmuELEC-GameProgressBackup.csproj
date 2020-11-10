@@ -51,7 +51,7 @@
     <StartupObject>EmuELEC_GameProgressBackup.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Game-Controller.ico</ApplicationIcon>
+    <ApplicationIcon>Images\joystick.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FAndradeTI.Util.FileSystem, Version=1.0.14.0, Culture=neutral, processorArchitecture=MSIL">
@@ -120,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game-Controller.ico" />
+    <None Include="Images\joystick.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

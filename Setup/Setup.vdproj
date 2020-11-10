@@ -15,8 +15,26 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_11823AFA0C19121B380DF7E586AB8A6A"
+        "OwnerKey" = "8:_D7FCF2575FCE9808EC6B29789234A5EE"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_13AF6111CB4C95458D08B2F2053A215B"
+        "OwnerKey" = "8:_27382141B29E4ACD86B466743A27F214"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_27382141B29E4ACD86B466743A27F214"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_58F6CB8ED8DEEF86E9DF98AD6BA2CD53"
+        "OwnerKey" = "8:_27382141B29E4ACD86B466743A27F214"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -27,8 +45,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_F036DC550F1A49FF87F2DFEC6C70AF87"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_859B254D800156AE9D8840894780BB5E"
+        "OwnerKey" = "8:_27382141B29E4ACD86B466743A27F214"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D7FCF2575FCE9808EC6B29789234A5EE"
+        "OwnerKey" = "8:_27382141B29E4ACD86B466743A27F214"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D7FCF2575FCE9808EC6B29789234A5EE"
+        "OwnerKey" = "8:_13AF6111CB4C95458D08B2F2053A215B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -40,7 +70,37 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_859B254D800156AE9D8840894780BB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_58F6CB8ED8DEEF86E9DF98AD6BA2CD53"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_13AF6111CB4C95458D08B2F2053A215B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_7F398FA639009F89F8C4A24F46A5AC5B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D7FCF2575FCE9808EC6B29789234A5EE"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_11823AFA0C19121B380DF7E586AB8A6A"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -138,6 +198,99 @@
         }
         "File"
         {
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_11823AFA0C19121B380DF7E586AB8A6A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:TRUE"
+            "AssemblyAsmDisplayName" = "8:System.IO.Compression, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_11823AFA0C19121B380DF7E586AB8A6A"
+                    {
+                    "Name" = "8:System.IO.Compression.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.IO.Compression.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_E3CBC5669BBD45A38F127052D5F65671"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_13AF6111CB4C95458D08B2F2053A215B"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:FAndradeTI.Util.FileSystem, Version=1.0.14.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_13AF6111CB4C95458D08B2F2053A215B"
+                    {
+                    "Name" = "8:FAndradeTI.Util.FileSystem.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:FAndradeTI.Util.FileSystem.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_E3CBC5669BBD45A38F127052D5F65671"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_58F6CB8ED8DEEF86E9DF98AD6BA2CD53"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:FAndradeTI.Util.Network, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_58F6CB8ED8DEEF86E9DF98AD6BA2CD53"
+                    {
+                    "Name" = "8:FAndradeTI.Util.Network.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:FAndradeTI.Util.Network.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_E3CBC5669BBD45A38F127052D5F65671"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7F398FA639009F89F8C4A24F46A5AC5B"
             {
             "AssemblyRegister" = "3:1"
@@ -169,10 +322,21 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F036DC550F1A49FF87F2DFEC6C70AF87"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_859B254D800156AE9D8840894780BB5E"
             {
-            "SourcePath" = "8:..\\..\\.Resources\\PublicResources\\images\\fandradeti.ico"
-            "TargetName" = "8:fandradeti.ico"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:FAndradeTI.Util.WinForms, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_859B254D800156AE9D8840894780BB5E"
+                    {
+                    "Name" = "8:FAndradeTI.Util.WinForms.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:FAndradeTI.Util.WinForms.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E3CBC5669BBD45A38F127052D5F65671"
             "Condition" = "8:"
@@ -186,7 +350,38 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D7FCF2575FCE9808EC6B29789234A5EE"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.IO.Compression.FileSystem, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+                "ScatterAssemblies"
+                {
+                    "_D7FCF2575FCE9808EC6B29789234A5EE"
+                    {
+                    "Name" = "8:System.IO.Compression.FileSystem.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.IO.Compression.FileSystem.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_E3CBC5669BBD45A38F127052D5F65671"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
         }
@@ -267,15 +462,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:NandoRunner EmuELEC-GameProgressBackup"
-        "ProductCode" = "8:{65E1170E-B2B0-43B5-A63D-B998FD3E4B27}"
-        "PackageCode" = "8:{246CE5C3-9229-4546-B4FB-8A9506FE07D0}"
+        "ProductCode" = "8:{052CB135-971D-4712-B4C3-23A1976F435F}"
+        "PackageCode" = "8:{EEF609B3-471A-4186-9A78-1FB49E2ECC45}"
         "UpgradeCode" = "8:{AEDB4086-B3E9-46E6-ADB1-451981A50615}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.17"
+        "ProductVersion" = "8:1.0.18"
         "Manufacturer" = "8:FAndradeTI"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -285,8 +480,8 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:EmuELEC-GameProgressBackup"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:_F036DC550F1A49FF87F2DFEC6C70AF87"
-        "ARPIconIndex" = "3:0"
+        "ARPPRODUCTICON" = "8:_27382141B29E4ACD86B466743A27F214"
+        "ARPIconIndex" = "3:32512"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:1"

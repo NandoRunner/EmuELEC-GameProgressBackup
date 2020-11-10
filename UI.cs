@@ -8,6 +8,7 @@ namespace EmuELEC_GameProgressBackup
     public static class UI
     {
         public static FileExtensions selectedExtension = FileExtensions.State;
+        public static string selectedNode = string.Empty;
 
         public static readonly Dictionary<FileExtensions, string> searchPatternDic = new Dictionary<FileExtensions, string>() { { FileExtensions.State, "*.state????" },
             { FileExtensions.Srm, "*.srm" },

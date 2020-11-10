@@ -17,7 +17,7 @@ namespace EmuELEC_GameProgressBackup
         public static List<string> fileList = new List<string>();
         public static List<string> dirList = new List<string>();
 
-        public static void BackupFiles(TreeView treeView, string path)
+        public static void BackupFiles(string selectedNode, string path)
         {
             DateTime dt = DateTime.Now;
 
@@ -26,9 +26,13 @@ namespace EmuELEC_GameProgressBackup
             //todo: criar caminhos relativos?
             var i = 1;
 
-            fileList.Sort();
+            var newLIst = fileList.ToList();
 
-            foreach (var file in fileList)
+            if (!string.IsNullOrEmpty(selectedNode)) newLIst.RemoveAll(u => !u.Contains(selectedNode));
+
+            newLIst.Sort();
+
+            foreach (var file in newLIst)
             {
                 StatusStripControl.UpdateProgressBar();
                 StatusStripControl.UpdateLabel($"{i++}/{found} - {file}");
@@ -38,7 +42,7 @@ namespace EmuELEC_GameProgressBackup
             StatusStripControl.UpdateLabel($"{found} {UI.GetExtensionName()} files backup completed in {DateTime.Now.Subtract(dt).TotalSeconds.ToString("#.#")} seconds");
 
             found = 0;
-            fileList.Clear();
+            if (string.IsNullOrEmpty(selectedNode)) fileList.Clear();
         }
 
         #region Non-recursive approach

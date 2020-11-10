@@ -59,6 +59,9 @@ namespace EmuELEC_GameProgressBackup
             rdoStates.Click += EventChangeExtension;
             rdoAll.Click += EventChangeExtension;
 
+            tvwInput.NodeMouseClick += EventSelectNode;
+
+
         }
         public async Task EndTask()
         {
@@ -73,9 +76,9 @@ namespace EmuELEC_GameProgressBackup
 
         public async Task EndTaskBackup()
         {
-            tvwInput.SafeInvoke(c => c.Nodes.Clear());
+            if (string.IsNullOrEmpty(UI.selectedNode)) tvwInput.SafeInvoke(c => c.Nodes.Clear());
             isProcessing = false;
-            isLoaded = false;
+            isLoaded = (!string.IsNullOrEmpty(UI.selectedNode));
             EnableFields(true);
             this.Cursor = Cursors.Arrow;
         }
@@ -181,7 +184,7 @@ namespace EmuELEC_GameProgressBackup
 
             string[] listPath = { outputFolder };
 
-            var myTasks = (from path in listPath select (Task.Run(() => Business.BackupFiles(tvwInput, path)))).ToArray();
+            var myTasks = (from path in listPath select (Task.Run(() => Business.BackupFiles(UI.selectedNode, path)))).ToArray();
 
             var t = Task.WhenAll(myTasks);
             await t.ContinueWith(x => EndTaskBackup());
@@ -356,6 +359,11 @@ namespace EmuELEC_GameProgressBackup
             isDeleteEnabled = !isDeleteEnabled;
             MenuItemClick();
 
+        }
+
+        private void EventSelectNode(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            UI.selectedNode = e.Node.Text;
         }
     }
 }
