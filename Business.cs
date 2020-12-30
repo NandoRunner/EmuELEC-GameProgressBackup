@@ -17,7 +17,7 @@ namespace EmuELEC_GameProgressBackup
         public static List<string> fileList = new List<string>();
         public static List<string> dirList = new List<string>();
 
-        public static void BackupFiles(string selectedNode, string path)
+        public static void BackupFiles(string selectedNode, string path, string baseInputPath)
         {
             DateTime dt = DateTime.Now;
 
@@ -36,7 +36,11 @@ namespace EmuELEC_GameProgressBackup
             {
                 StatusStripControl.UpdateProgressBar();
                 StatusStripControl.UpdateLabel($"{i++}/{found} - {file}");
-                FS.CopyFileIfNewer(file, path);
+                var fileFolder = FS.GetFolderName(file).Replace(baseInputPath+"\\", "");
+                fileFolder = FS.PathCombine(path, fileFolder);
+                if (!FS.FolderExists(fileFolder)) FS.CreateFolder(fileFolder);
+
+                FS.CopyFileIfNewer(file, FS.PathCombine(path, fileFolder));
             }
 
             StatusStripControl.UpdateLabel($"{found} {UI.GetExtensionName()} files backup completed in {DateTime.Now.Subtract(dt).TotalSeconds.ToString("#.#")} seconds");

@@ -236,11 +236,6 @@
             "AssemblyAsmDisplayName" = "8:FAndradeTI.Util.FileSystem, Version=1.0.14.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_13AF6111CB4C95458D08B2F2053A215B"
-                    {
-                    "Name" = "8:FAndradeTI.Util.FileSystem.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:FAndradeTI.Util.FileSystem.dll"
             "TargetName" = "8:"
@@ -462,15 +457,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:NandoRunner EmuELEC-GameProgressBackup"
-        "ProductCode" = "8:{052CB135-971D-4712-B4C3-23A1976F435F}"
-        "PackageCode" = "8:{EEF609B3-471A-4186-9A78-1FB49E2ECC45}"
+        "ProductCode" = "8:{DAFCD1C8-35E3-46B7-91D2-18EC256C5BD6}"
+        "PackageCode" = "8:{98AE2DC7-74A4-4C9D-912B-7E77AB5DD91D}"
         "UpgradeCode" = "8:{AEDB4086-B3E9-46E6-ADB1-451981A50615}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.18"
+        "ProductVersion" = "8:1.0.19"
         "Manufacturer" = "8:FAndradeTI"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

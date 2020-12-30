@@ -54,8 +54,8 @@
     <ApplicationIcon>Images\joystick.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FAndradeTI.Util.FileSystem, Version=1.0.14.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\FAndradeTI.Util.FileSystem.1.0.14\lib\net472\FAndradeTI.Util.FileSystem.dll</HintPath>
+    <Reference Include="FAndradeTI.Util.FileSystem, Version=1.0.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\FAndradeTI.Util.FileSystem.1.0.15\lib\net472\FAndradeTI.Util.FileSystem.dll</HintPath>
     </Reference>
     <Reference Include="FAndradeTI.Util.Network, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\FAndradeTI.Util.Network.1.0.6\lib\net472\FAndradeTI.Util.Network.dll</HintPath>

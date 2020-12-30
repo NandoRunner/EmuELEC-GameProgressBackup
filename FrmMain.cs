@@ -184,7 +184,7 @@ namespace EmuELEC_GameProgressBackup
 
             string[] listPath = { outputFolder };
 
-            var myTasks = (from path in listPath select (Task.Run(() => Business.BackupFiles(UI.selectedNode, path)))).ToArray();
+            var myTasks = (from path in listPath select (Task.Run(() => Business.BackupFiles(UI.selectedNode, path, txtInput.Text)))).ToArray();
 
             var t = Task.WhenAll(myTasks);
             await t.ContinueWith(x => EndTaskBackup());
